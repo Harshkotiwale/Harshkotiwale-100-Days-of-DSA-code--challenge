@@ -1,0 +1,42 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        //initial condition(we hve to explictly handle it)
+        if(head==NULL || head->next==NULL||k==0)
+        {return head;}
+        ListNode* curr=head;
+        int l=0;
+        //finding (length-1) and pointing curr to last node
+        while(curr->next!=NULL)
+        {curr=curr->next;
+        l++;}
+        //converting a singly ll into a circular ll
+        curr->next=head;
+        ListNode* curr1=head;
+        //MOST IMP CASE WHEN K>=LENGTH THEN IT WORKS SUPERB 
+        //BECASE FOR A LL AFTER SPECIFIC ROTATIONS IT AGAIN STARTS REPEATING
+        k=k%(l+1);
+        //THEN breaking A CIRCULAR LL INTO SINGLY LL 
+        int rotate=l-k;
+        //ROTATE IS ALSO IMP 
+        while(rotate!=0)
+        {curr1=curr1->next;
+        rotate=rotate-1;
+        }
+        //HERE WE BREAK THE CIRCULAR LL
+         ListNode* temp=curr1->next;
+        //THIS CURR1 POINTS TO THE END OF A FINAL LL AFTER K ROTATIONS
+        curr1->next=NULL;
+        //TEMP POINTS TO THE HEAD OF A UPDATED LL
+        return temp;
+        }};
