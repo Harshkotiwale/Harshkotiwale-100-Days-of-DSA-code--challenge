@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<int> min_index_value(vector<int>& x,int start,int end){
+        int y=10001,z=-1;
+        vector<int> t;
+        for(int i=start;i<=end;i++){
+            if (x[i]<y){y=x[i];z=i;}
+        }
+        t.push_back(z);
+        t.push_back(y);
+        return t;
+    }
+    int m_area(vector<int>& x,int start,int end,int maxarea){
+        int area=(end-start+1)*min_index_value(x,start,end)[1];
+        if(area>maxarea){maxarea=area;}
+        return maxarea;
+    }
+    int function(vector<int> &x,int start,int end,int maxarea){
+        
+        if(start>end){return maxarea;}
+        if(start==end){return m_area(x,start,start,maxarea);}
+        
+        int area=m_area(x,start,end,maxarea);
+        if(area>maxarea){maxarea=area;}
+
+        int minVal = min_index_value(x, start, end)[1];
+        int a = start;
+        while (a <= end && x[a] == minVal) {
+            a++;
+        }
+
+        if (a <= end) {
+            a = min_index_value(x, start, end)[0] - 1;
+            int b = min_index_value(x, start, end)[0] + 1;
+            maxarea = function(x, start, a, maxarea);
+            maxarea = function(x, b, end, maxarea);
+        }
+
+        return maxarea;
+    }
+
+    int largestRectangleArea(vector<int>& h) {
+        vector<int> x=h;
+        sort(x.begin(),x.end());
+        if(x==h){
+        int maxArea = 0;
+        int n = h.size();
+        for (int i = 0; i < n; i++) {
+            int height = h[i];
+            maxArea = max(maxArea, height * (n - i));
+        }
+        return maxArea;
+        }
+        return function(h,0,h.size()-1,0);
+    }
+};
