@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numDecodingsRecursive(string s, int index) {
+        if (index == s.length()) {
+            return 1; 
+        }
+
+        if (s[index] == '0') {
+            return 0; 
+        }
+
+        int ways = numDecodingsRecursive(s, index + 1); 
+
+        if (index + 1 < s.length() && (s[index] == '1' || (s[index] == '2' && s[index + 1] <= '6'))) {
+            ways += numDecodingsRecursive(s, index + 2); 
+        }
+
+        return ways;
+    }
+
+    int numDecodings(string s) {
+        return numDecodingsRecursive(s, 0);
+    }
+};
